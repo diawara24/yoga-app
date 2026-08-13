@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SessionDto {
+
     private Long id;
 
     @NotBlank(message = "{error.session.name.not-blank}")

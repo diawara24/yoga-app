@@ -13,9 +13,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
@@ -65,8 +65,8 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @NonNull
-    private boolean admin;
+    @Builder.Default
+    private boolean admin = false;
 
     @CreatedDate
     @Column(updatable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")

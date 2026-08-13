@@ -1,78 +1,23 @@
 package com.openclassrooms.starterjwt.services;
 
-import com.openclassrooms.starterjwt.exception.BadRequestException;
-import com.openclassrooms.starterjwt.exception.NotFoundException;
-import com.openclassrooms.starterjwt.models.Session;
-import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.repository.SessionRepository;
-import com.openclassrooms.starterjwt.repository.UserRepository;
-import org.springframework.stereotype.Service;
+import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.payload.response.JwtResponse;
+import com.openclassrooms.starterjwt.payload.response.MessageResponse;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class SessionService {
-    private final SessionRepository sessionRepository;
+public interface SessionService {
+    SessionDto create(SessionDto sessionDto);
 
-    private final UserRepository userRepository;
+  MessageResponse delete(Long id);
 
-    public SessionService(SessionRepository sessionRepository, UserRepository userRepository) {
-        this.sessionRepository = sessionRepository;
-        this.userRepository = userRepository;
-    }
+    List<SessionDto> findAll();
 
-    public Session create(Session session) {
-        return this.sessionRepository.save(session);
-    }
+    SessionDto getById(Long id);
 
-    public void delete(Long id) {
-        this.sessionRepository.deleteById(id);
-    }
+    SessionDto update(Long id, SessionDto sessionDto);
 
-    public List<Session> findAll() {
-        return this.sessionRepository.findAll();
-    }
+   MessageResponse participate(Long id, Long userId);
 
-    public Session getById(Long id) {
-        return this.sessionRepository.findById(id).orElse(null);
-    }
-
-    public Session update(Long id, Session session) {
-        session.setId(id);
-        return this.sessionRepository.save(session);
-    }
-
-    public void participate(Long id, Long userId) {
-
-        Session session = this.sessionRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("error.session.not-found", id)
-        );
-
-        User user = this.userRepository.findById(userId).orElseThrow(
-                () -> new NotFoundException("error.user.not-found", userId)
-        );
-
-        boolean alreadyParticipate = session.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
-        if (alreadyParticipate) {
-            throw new BadRequestException("error.detail.bad-request");
-        }
-
-        session.getUsers().add(user);
-
-        this.sessionRepository.save(session);
-    }
-
-    public void noLongerParticipate(Long id, Long userId) {
-        Session session = this.sessionRepository.findById(id).orElseThrow(() -> new NotFoundException("error.session.not-found", id));
-
-        boolean alreadyParticipate = session.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
-        if (!alreadyParticipate) {
-            throw new BadRequestException("error.detail.bad-request");
-        }
-
-        session.setUsers(session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
-
-        this.sessionRepository.save(session);
-    }
+   MessageResponse noLongerParticipate(Long id, Long userId);
 }

@@ -1,6 +1,6 @@
 package com.openclassrooms.starterjwt.filter.jwt;
 
-import com.openclassrooms.starterjwt.services.UserDetailsServiceImpl;
+import com.openclassrooms.starterjwt.services.impl.UserDetailsServiceImpl;
 import com.openclassrooms.starterjwt.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

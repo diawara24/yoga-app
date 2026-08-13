@@ -2,7 +2,7 @@ package com.openclassrooms.starterjwt.configuration;
 
 import com.openclassrooms.starterjwt.filter.jwt.AuthEntryPointJwt;
 import com.openclassrooms.starterjwt.filter.jwt.AuthTokenFilter;
-import com.openclassrooms.starterjwt.services.UserDetailsServiceImpl;
+import com.openclassrooms.starterjwt.services.impl.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -67,10 +67,12 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+
+        provider.setPasswordEncoder(passwordEncoder());
+
+        return provider;
+
     }
 
 

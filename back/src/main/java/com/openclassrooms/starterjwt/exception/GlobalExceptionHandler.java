@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
         String details = ex.getBindingResult().getFieldErrors().stream()
-                        .map(e -> e.getField() + " " + e.getDefaultMessage())
+                        .map(e -> e.getField() + ": " + e.getDefaultMessage())
                 .collect(Collectors.joining());
 
         log.warn("Validation échouée sur {} : {}", request.getRequestURI(), details);

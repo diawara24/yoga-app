@@ -1,10 +1,4 @@
 package com.openclassrooms.starterjwt.payload.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
-public class MessageResponse {
-    private String message;
+public record MessageResponse(String message) {
 }
