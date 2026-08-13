@@ -15,12 +15,12 @@ import java.time.LocalDateTime;
 public class TeacherDto {
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "{error.teacher.last-name.not-blank}")
+    @Size(max = 20, message = "{error.teacher.last-name.size}")
     private String lastName;
 
-    @NotBlank
-    @Size(max = 20)
+    @NotBlank(message = "{error.teacher.first-name.not-blank}")
+    @Size(max = 20, message = "{error.teacher.first-name.size}")
     private String firstName;
 
     private LocalDateTime createdAt;

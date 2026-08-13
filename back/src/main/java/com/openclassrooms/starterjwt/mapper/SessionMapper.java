@@ -22,6 +22,7 @@ public abstract class SessionMapper implements EntityMapper<SessionDto, Session>
 
     @Autowired
     TeacherService teacherService;
+
     @Autowired
     UserService userService;
 

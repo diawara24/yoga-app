@@ -44,15 +44,18 @@ public class SessionService {
     }
 
     public void participate(Long id, Long userId) {
-        Session session = this.sessionRepository.findById(id).orElse(null);
-        User user = this.userRepository.findById(userId).orElse(null);
-        if (session == null || user == null) {
-            throw new NotFoundException();
-        }
+
+        Session session = this.sessionRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("error.session.not-found", id)
+        );
+
+        User user = this.userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("error.user.not-found", userId)
+        );
 
         boolean alreadyParticipate = session.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
         if (alreadyParticipate) {
-            throw new BadRequestException();
+            throw new BadRequestException("error.detail.bad-request");
         }
 
         session.getUsers().add(user);
@@ -61,14 +64,11 @@ public class SessionService {
     }
 
     public void noLongerParticipate(Long id, Long userId) {
-        Session session = this.sessionRepository.findById(id).orElse(null);
-        if (session == null) {
-            throw new NotFoundException();
-        }
+        Session session = this.sessionRepository.findById(id).orElseThrow(() -> new NotFoundException("error.session.not-found", id));
 
         boolean alreadyParticipate = session.getUsers().stream().anyMatch(o -> o.getId().equals(userId));
         if (!alreadyParticipate) {
-            throw new BadRequestException();
+            throw new BadRequestException("error.detail.bad-request");
         }
 
         session.setUsers(session.getUsers().stream().filter(user -> !user.getId().equals(userId)).collect(Collectors.toList()));
