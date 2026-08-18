@@ -15,7 +15,10 @@ import com.openclassrooms.starterjwt.services.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -28,9 +31,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SessionDto create(SessionDto sessionDto) {
-        Teacher teacher = this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(() -> new NotFoundException("error.teacher.not-found", sessionDto.getTeacher_id()));
-        Session session = sessionMapper.toEntity(sessionDto);
-        session.setTeacher(teacher);
+        Session session = buildSessionFromDto(sessionDto);
         Session s = this.sessionRepository.save(session);
         return sessionMapper.toDto(s);
     }
@@ -60,7 +61,10 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SessionDto update(Long id, SessionDto sessionDto) {
-        Session session = sessionMapper.toEntity(sessionDto);
+        this.sessionRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("error.session.not-found", id));
+
+        Session session = buildSessionFromDto(sessionDto);
         session.setId(id);
         Session updated = this.sessionRepository.save(session);
         return sessionMapper.toDto(updated);
@@ -100,5 +104,20 @@ public class SessionServiceImpl implements SessionService {
         this.sessionRepository.save(session);
 
         return new MessageResponse("Participation retirer");
+    }
+
+    private Session buildSessionFromDto(SessionDto dto) {
+        Teacher teacher = this.teacherRepository.findById(dto.getTeacher_id())
+                .orElseThrow(() -> new NotFoundException("error.teacher.not-found", dto.getTeacher_id()));
+
+        List<User> users = Optional.ofNullable(dto.getUsers()).orElseGet(Collections::emptyList).stream()
+                .map(userId -> this.userRepository.findById(userId)
+                        .orElseThrow(() -> new NotFoundException("error.user.not-found", userId)))
+                .collect(Collectors.toList());
+
+        Session session = sessionMapper.toEntity(dto);
+        session.setTeacher(teacher);
+        session.setUsers(users);
+        return session;
     }
 }
