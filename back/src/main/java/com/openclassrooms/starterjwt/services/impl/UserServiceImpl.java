@@ -2,6 +2,7 @@ package com.openclassrooms.starterjwt.services.impl;
 
 import com.openclassrooms.starterjwt.dto.UserDto;
 import com.openclassrooms.starterjwt.exception.NotFoundException;
+import com.openclassrooms.starterjwt.exception.UnauthorizedException;
 import com.openclassrooms.starterjwt.mapper.UserMapper;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.payload.response.MessageResponse;
@@ -31,7 +32,7 @@ public class UserServiceImpl  implements UserService {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         if (!Objects.equals(userDetails.getUsername(), user.getEmail())) {
-            throw new SecurityException("Unauthorized");
+            throw new UnauthorizedException("error.security.access-denied");
         }
         this.userRepository.delete(user);
 

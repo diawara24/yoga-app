@@ -78,6 +78,12 @@ public class GlobalExceptionHandler {
         return createProblemDetail(HttpStatus.CONFLICT, "error.title.conflict",  resolve("error.detail.data-integrity"));
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ProblemDetail handleUnauthorized(UnauthorizedException ex) {
+        return createProblemDetail(HttpStatus.FORBIDDEN, "error.title.access-denied",
+                resolve(ex.getCode(), ex.getArgs()));
+    }
+
     private String resolve(String code, Object... args) {
         return messageSource.getMessage(code, args, LocaleContextHolder.getLocale());
     }
