@@ -1,7 +1,9 @@
 package com.openclassrooms.starterjwt.mapper;
 
 import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.dto.TeacherDto;
 import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.TeacherRepository;
 import com.openclassrooms.starterjwt.repository.UserRepository;
@@ -31,6 +33,7 @@ public abstract class SessionMapper implements EntityMapper<SessionDto, Session>
             @Mapping(target = "users", expression = "java(Optional.ofNullable(sessionDto.getUsers()).orElseGet(Collections::emptyList).stream().map(user_id -> this.userRepository.findById(user_id).orElse(null)).filter(java.util.Objects::nonNull).collect(Collectors.toList()))"),
     })
     public abstract Session toEntity(SessionDto sessionDto);
+
 
 
     @Mappings({

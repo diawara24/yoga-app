@@ -5,6 +5,7 @@ import com.openclassrooms.starterjwt.exception.BadRequestException;
 import com.openclassrooms.starterjwt.exception.NotFoundException;
 import com.openclassrooms.starterjwt.mapper.SessionMapper;
 import com.openclassrooms.starterjwt.models.Session;
+import com.openclassrooms.starterjwt.models.Teacher;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.payload.response.MessageResponse;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
@@ -27,8 +28,9 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public SessionDto create(SessionDto sessionDto) {
-        this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(() -> new NotFoundException("error.teacher.not-found", sessionDto.getTeacher_id()));
+        Teacher teacher = this.teacherRepository.findById(sessionDto.getTeacher_id()).orElseThrow(() -> new NotFoundException("error.teacher.not-found", sessionDto.getTeacher_id()));
         Session session = sessionMapper.toEntity(sessionDto);
+        session.setTeacher(teacher);
         Session s = this.sessionRepository.save(session);
         return sessionMapper.toDto(s);
     }

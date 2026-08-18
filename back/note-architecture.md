@@ -41,6 +41,7 @@ Créer une classe de type `@ControllerAdvice` qui gère les exceptions globaleme
 - `BadRequestException` → HTTP 400
 - `UnauthorizedException` → HTTP 401
 - `NumberFormatException` → HTTP 400
+- ...
 
 Cela permet de supprimer les `try/catch` redondants présents dans les controllers.
 
