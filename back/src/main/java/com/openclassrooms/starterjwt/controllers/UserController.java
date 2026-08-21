@@ -1,7 +1,7 @@
 package com.openclassrooms.starterjwt.controllers;
 
 import com.openclassrooms.starterjwt.dto.UserDto;
-import com.openclassrooms.starterjwt.payload.response.MessageResponse;
+import com.openclassrooms.starterjwt.dto.response.MessageResponse;
 import com.openclassrooms.starterjwt.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

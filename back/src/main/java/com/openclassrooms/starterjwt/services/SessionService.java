@@ -1,13 +1,13 @@
 package com.openclassrooms.starterjwt.services;
 
 import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.payload.response.JwtResponse;
-import com.openclassrooms.starterjwt.payload.response.MessageResponse;
+import com.openclassrooms.starterjwt.dto.SessionRequest;
+import com.openclassrooms.starterjwt.dto.response.MessageResponse;
 
 import java.util.List;
 
 public interface SessionService {
-    SessionDto create(SessionDto sessionDto);
+    SessionDto create(SessionRequest sessionRequest);
 
   MessageResponse delete(Long id);
 
@@ -15,7 +15,7 @@ public interface SessionService {
 
     SessionDto getById(Long id);
 
-    SessionDto update(Long id, SessionDto sessionDto);
+    SessionDto update(Long id, SessionRequest sessionRequest);
 
    MessageResponse participate(Long id, Long userId);
 

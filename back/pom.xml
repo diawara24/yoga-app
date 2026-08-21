@@ -103,6 +103,13 @@
             <version>4.0.0</version>
         </dependency>
 
+        <!-- pom.xml -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -155,7 +162,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.13</version>
                 <executions>
                     <execution>
                         <goals>

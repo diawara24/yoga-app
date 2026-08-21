@@ -2,8 +2,8 @@ package com.openclassrooms.starterjwt.controllers;
 
 
 import com.openclassrooms.starterjwt.dto.SessionDto;
-import com.openclassrooms.starterjwt.payload.response.JwtResponse;
-import com.openclassrooms.starterjwt.payload.response.MessageResponse;
+import com.openclassrooms.starterjwt.dto.SessionRequest;
+import com.openclassrooms.starterjwt.dto.response.MessageResponse;
 import com.openclassrooms.starterjwt.services.SessionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -40,14 +40,14 @@ public class SessionController {
     }
 
     @PostMapping()
-    public ResponseEntity<SessionDto> create(@Valid @RequestBody SessionDto sessionDto) {
-        SessionDto created = this.sessionService.create(sessionDto);
+    public ResponseEntity<SessionDto> create(@Valid @RequestBody SessionRequest sessionRequest) {
+        SessionDto created = this.sessionService.create(sessionRequest);
         return ResponseEntity.ok().body(created);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<SessionDto> update(@PathVariable("id") Long id, @Valid @RequestBody SessionDto sessionDto) {
-        SessionDto updated = this.sessionService.update(id, sessionDto);
+    public ResponseEntity<SessionDto> update(@PathVariable("id") Long id, @Valid @RequestBody SessionRequest sessionRequest) {
+        SessionDto updated = this.sessionService.update(id, sessionRequest);
         return ResponseEntity.ok().body(updated);
     }
 

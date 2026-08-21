@@ -1,7 +1,7 @@
 package com.openclassrooms.starterjwt.configuration;
 
-import com.openclassrooms.starterjwt.filter.jwt.AuthEntryPointJwt;
-import com.openclassrooms.starterjwt.filter.jwt.AuthTokenFilter;
+import com.openclassrooms.starterjwt.configuration.filter.jwt.AuthEntryPointJwt;
+import com.openclassrooms.starterjwt.configuration.filter.jwt.AuthTokenFilter;
 import com.openclassrooms.starterjwt.services.impl.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

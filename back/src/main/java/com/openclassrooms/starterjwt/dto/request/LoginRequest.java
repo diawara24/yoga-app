@@ -1,5 +1,4 @@
-package com.openclassrooms.starterjwt.payload.request;
-
+package com.openclassrooms.starterjwt.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
@@ -8,8 +7,6 @@ import lombok.Data;
 public class LoginRequest {
     @NotBlank
     private String email;
-
     @NotBlank
     private String password;
-
 }

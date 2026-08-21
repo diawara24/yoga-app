@@ -1,4 +1,4 @@
-package com.openclassrooms.starterjwt.utils;
+package com.openclassrooms.starterjwt.services.impl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

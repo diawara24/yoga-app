@@ -1,15 +1,14 @@
 package com.openclassrooms.starterjwt.services.impl;
 
+import com.openclassrooms.starterjwt.dto.request.LoginRequest;
+import com.openclassrooms.starterjwt.dto.request.SignupRequest;
+import com.openclassrooms.starterjwt.dto.response.JwtResponse;
+import com.openclassrooms.starterjwt.dto.response.MessageResponse;
 import com.openclassrooms.starterjwt.exception.BadRequestException;
 import com.openclassrooms.starterjwt.models.User;
-import com.openclassrooms.starterjwt.payload.request.LoginRequest;
-import com.openclassrooms.starterjwt.payload.request.SignupRequest;
-import com.openclassrooms.starterjwt.payload.response.JwtResponse;
-import com.openclassrooms.starterjwt.payload.response.MessageResponse;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.services.AuthService;
-import com.openclassrooms.starterjwt.utils.JwtUtils;
-import com.openclassrooms.starterjwt.utils.UserDetailsImpl;
+import com.openclassrooms.starterjwt.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +22,7 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     
     private final AuthenticationManager authenticationManager;
-    private final JwtUtils jwtUtils;
+    private final JwtService jwtUtils;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 

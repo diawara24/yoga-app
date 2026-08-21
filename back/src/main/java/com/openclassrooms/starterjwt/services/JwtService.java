@@ -1,4 +1,4 @@
-package com.openclassrooms.starterjwt.utils;
+package com.openclassrooms.starterjwt.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 
 @Slf4j
 @Component
-public class JwtUtils {
+public class JwtService {
     @Value("${oc.app.jwtSecret}")
     private String jwtSecret;
 

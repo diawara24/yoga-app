@@ -1,6 +1,7 @@
 package com.openclassrooms.starterjwt.mapper;
 
 import com.openclassrooms.starterjwt.dto.SessionDto;
+import com.openclassrooms.starterjwt.dto.SessionRequest;
 import com.openclassrooms.starterjwt.models.Session;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,6 +13,12 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", imports = {Collectors.class, Collections.class})
 public interface SessionMapper extends EntityMapper<SessionDto, Session> {
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "teacher", ignore = true)
+    @Mapping(target = "users", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Session toEntity(SessionRequest sessionRequest);
 
     @Mapping(source = "description", target = "description")
     @Mapping(target = "teacher", ignore = true)
