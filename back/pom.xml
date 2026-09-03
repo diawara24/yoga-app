@@ -2,29 +2,40 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
+
     <groupId>com.openclassrooms</groupId>
     <artifactId>yoga-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+
     <name>yoga-app</name>
-    <description>The best backend for an Yoga app !</description>
+    <description>The best backend for a Yoga app!</description>
 
     <properties>
         <java.version>21</java.version>
+
         <mapstruct.version>1.6.3</mapstruct.version>
         <lombok.version>1.18.32</lombok.version>
         <testcontainers.version>1.20.0</testcontainers.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <dependencies>
+
+        <!-- ========================= -->
+        <!-- Spring Boot               -->
+        <!-- ========================= -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -45,6 +56,7 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Docker Compose -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-docker-compose</artifactId>
@@ -52,28 +64,45 @@
             <optional>true</optional>
         </dependency>
 
+        <!-- MySQL -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
 
+        <!-- JWT -->
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.12.6</version>
         </dependency>
 
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>${lombok.version}</version>
         </dependency>
+
+        <!-- MapStruct -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
+
+        <!-- Environment variables -->
+        <dependency>
+            <groupId>me.paulschwarz</groupId>
+            <artifactId>spring-dotenv</artifactId>
+            <version>4.0.0</version>
+        </dependency>
+
+
+        <!-- ========================= -->
+        <!-- Tests                     -->
+        <!-- ========================= -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,24 +115,21 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Testcontainers -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mysql</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>me.paulschwarz</groupId>
-            <artifactId>spring-dotenv</artifactId>
-            <version>4.0.0</version>
-        </dependency>
-
-        <!-- pom.xml -->
+        <!-- H2 -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -112,8 +138,14 @@
 
     </dependencies>
 
+
+    <!-- ========================= -->
+    <!-- Dependency Management      -->
+    <!-- ========================= -->
+
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>org.testcontainers</groupId>
                 <artifactId>testcontainers-bom</artifactId>
@@ -121,86 +153,206 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
         </dependencies>
     </dependencyManagement>
+
+
+    <!-- ========================= -->
+    <!-- Build                     -->
+    <!-- ========================= -->
+
     <build>
         <plugins>
+
+            <!-- ========================= -->
+            <!-- Maven Compiler             -->
+            <!-- ========================= -->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+
                     <annotationProcessorPaths>
+
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
                             <version>${mapstruct.version}</version>
                         </path>
+
                     </annotationProcessorPaths>
+
                 </configuration>
             </plugin>
+
+
+            <!-- ========================= -->
+            <!-- Spring Boot                -->
+            <!-- ========================= -->
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
                 <configuration>
                     <excludes>
+
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
+
                     </excludes>
                 </configuration>
+
             </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
+
+
+            <!-- ========================= -->
+            <!-- JaCoCo                    -->
+            <!-- ========================= -->
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.13</version>
+
                 <executions>
+
+                    <!--
+                        Ajoute l'agent JaCoCo aux tests.
+                        Le résultat est stocké dans ${argLine}.
+                    -->
                     <execution>
+                        <id>prepare-agent</id>
+
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- attached to Maven test phase -->
+
+
+                    <!--
+                        Génération du rapport APRES les tests
+                        unitaires ET d'intégration.
+                    -->
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+
+                        <phase>verify</phase>
+
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
 
+
+                    <!--
+                        Vérification de la couverture globale.
+                    -->
                     <execution>
                         <id>jacoco-check</id>
+
+                        <phase>verify</phase>
+
                         <goals>
                             <goal>check</goal>
                         </goals>
+
                         <configuration>
+
                             <rules>
+
                                 <rule>
-                                    <element>PACKAGE</element>
+
+                                    <!--
+                                        Couverture globale du projet
+                                    -->
+                                    <element>BUNDLE</element>
+
+                                    <excludes>
+
+                                        <!-- DTO -->
+                                        <exclude>com/openclassrooms/starterjwt/dto/**</exclude>
+
+                                        <!-- Models -->
+                                        <exclude>com/openclassrooms/starterjwt/models/**</exclude>
+
+                                        <!-- Configuration -->
+                                        <exclude>com/openclassrooms/starterjwt/configuration/**</exclude>
+
+                                    </excludes>
+
                                     <limits>
+
                                         <limit>
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
-                                            <minimum>0.9</minimum>
+                                            <minimum>0.90</minimum>
                                         </limit>
+
                                     </limits>
+
                                 </rule>
+
                             </rules>
+
                         </configuration>
+
                     </execution>
 
                 </executions>
+
             </plugin>
+
+
+            <!-- ========================= -->
+            <!-- Maven Failsafe             -->
+            <!-- ========================= -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+
+                <executions>
+
+                    <!--
+                        Lance les tests d'intégration :
+                        *IT.java
+                        *ITCase.java
+                    -->
+                    <execution>
+                        <id>integration-tests</id>
+
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+
+                    </execution>
+
+                </executions>
+
+                <configuration>
+
+                    <!--
+                        Récupère l'agent JaCoCo configuré
+                        par jacoco:prepare-agent.
+                    -->
+                    <argLine>${argLine}</argLine>
+
+                </configuration>
+
+            </plugin>
+
         </plugins>
     </build>
 

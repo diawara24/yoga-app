@@ -15,8 +15,11 @@ import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.services.SessionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -36,9 +39,11 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public MessageResponse delete(Long id) {
-       this.sessionRepository.findById(id).orElseThrow(() -> new NotFoundException("error.session.not-found", id));
+        if (!this.sessionRepository.existsById(id)) {
+            throw new NotFoundException("error.session.not-found", id);
+        }
 
-        this.sessionRepository.deleteById(id);
+        this.sessionRepository.delete(this.sessionRepository.getReferenceById(id));
 
         return new MessageResponse("Session supprimé");
     }
@@ -58,12 +63,16 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
+    @Transactional
     public SessionDto update(Long id, SessionRequest sessionRequest) {
         Session session = this.sessionRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("error.session.not-found", id));
 
-        Teacher teacher = this.teacherRepository.findById(sessionRequest.getTeacher_id())
-                .orElseThrow(() -> new NotFoundException("error.teacher.not-found", sessionRequest.getTeacher_id()));
+        if (!this.teacherRepository.existsById(sessionRequest.getTeacher_id())) {
+            throw new NotFoundException("error.teacher.not-found", sessionRequest.getTeacher_id());
+        }
+        Teacher teacher = this.teacherRepository.getReferenceById(sessionRequest.getTeacher_id());
+
         session.setName(sessionRequest.getName());
         session.setDate(sessionRequest.getDate());
         session.setTeacher(teacher);
@@ -102,19 +111,19 @@ public class SessionServiceImpl implements SessionService {
         }
 
         session.setUsers(session.getUsers().stream().filter(user -> !user.getId().equals(userId))
-                .toList());
+                .collect(Collectors.toCollection(ArrayList::new)));
         this.sessionRepository.save(session);
 
         return new MessageResponse("Participation retirer");
     }
 
-        private Session buildSessionFromRequest(SessionRequest request) {
+    private Session buildSessionFromRequest(SessionRequest request) {
         Teacher teacher = this.teacherRepository.findById(request.getTeacher_id())
-            .orElseThrow(() -> new NotFoundException("error.teacher.not-found", request.getTeacher_id()));
+                .orElseThrow(() -> new NotFoundException("error.teacher.not-found", request.getTeacher_id()));
 
         Session session = sessionMapper.toEntity(request);
         session.setTeacher(teacher);
-        session.setUsers(new java.util.ArrayList<>());
+        session.setUsers(new ArrayList<>());
         return session;
     }
 }

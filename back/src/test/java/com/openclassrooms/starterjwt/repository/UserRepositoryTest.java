@@ -30,5 +30,8 @@ class UserRepositoryTest {
                 .get()
                 .extracting(User::getEmail)
                 .isEqualTo("user@example.com");
+
+        assertThat(userRepository.existsByEmail("user@example.com"))
+                .isTrue();
     }
 }
