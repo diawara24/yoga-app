@@ -1,8 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SessionInformation } from 'src/app/core/models/sessionInformation.interface';
 import { SessionService } from 'src/app/core/service/session.service';
+import { getErrorMessage } from 'src/app/core/utils/error-message.util';
 import { LoginRequest } from '../../core/models/loginRequest.interface';
 import { AuthService } from '../../core/service/auth.service';
 import {MaterialModule} from "../../shared/material.module";
@@ -19,9 +21,10 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private sessionService = inject(SessionService);
+  private destroyRef = inject(DestroyRef);
 
   public hide = true;
-  public onError = false;
+  public errorMessage = '';
 
   public form = this.fb.group({
     email: [
@@ -35,19 +38,27 @@ export class LoginComponent {
       '',
       [
         Validators.required,
-        Validators.min(3)
+        Validators.minLength(3)
       ]
     ]
   });
 
   public submit(): void {
+    this.errorMessage = '';
     const loginRequest = this.form.value as LoginRequest;
-    this.authService.login(loginRequest).subscribe({
-      next: (response: SessionInformation) => {
-        this.sessionService.logIn(response);
-        this.router.navigate(['/sessions']);
-      },
-      error: error => this.onError = true,
-    });
+    this.authService.login(loginRequest)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response: SessionInformation) => {
+          this.sessionService.logIn(response);
+          this.router.navigate(['/sessions']);
+        },
+        error: (error: unknown) => {
+          this.errorMessage = getErrorMessage(
+            error,
+            'Connexion impossible. Vérifiez votre email et votre mot de passe.'
+          );
+        },
+      });
   }
 }

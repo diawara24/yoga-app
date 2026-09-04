@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { MessageResponse } from '../models/messageResponse.interface';
 import { Session } from '../models/session.interface';
 
 @Injectable({
@@ -21,8 +22,8 @@ export class SessionApiService {
     return this.httpClient.get<Session>(`${this.pathService}/${id}`);
   }
 
-  public delete(id: string): Observable<any> {
-    return this.httpClient.delete(`${this.pathService}/${id}`);
+  public delete(id: string): Observable<MessageResponse> {
+    return this.httpClient.delete<MessageResponse>(`${this.pathService}/${id}`);
   }
 
   public create(session: Session): Observable<Session> {
@@ -33,12 +34,12 @@ export class SessionApiService {
     return this.httpClient.put<Session>(`${this.pathService}/${id}`, session);
   }
 
-  public participate(id: string, userId: string): Observable<void> {
-    return this.httpClient.post<void>(`${this.pathService}/${id}/participate/${userId}`, null);
+  public participate(id: string, userId: string): Observable<MessageResponse> {
+    return this.httpClient.post<MessageResponse>(`${this.pathService}/${id}/participate/${userId}`, null);
   }
 
-  public unParticipate(id: string, userId: string): Observable<void> {
-    return this.httpClient.delete<void>(`${this.pathService}/${id}/participate/${userId}`);
+  public unParticipate(id: string, userId: string): Observable<MessageResponse> {
+    return this.httpClient.delete<MessageResponse>(`${this.pathService}/${id}/participate/${userId}`);
   }
 
 }

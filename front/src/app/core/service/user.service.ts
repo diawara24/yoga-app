@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { MessageResponse } from '../models/messageResponse.interface';
 import { User } from '../models/user.interface';
 
 @Injectable({
@@ -16,7 +17,7 @@ export class UserService {
     return this.httpClient.get<User>(`${this.pathService}/${id}`);
   }
 
-  public delete(id: string): Observable<any> {
-    return this.httpClient.delete(`${this.pathService}/${id}`);
+  public delete(id: string): Observable<MessageResponse> {
+    return this.httpClient.delete<MessageResponse>(`${this.pathService}/${id}`);
   }
 }

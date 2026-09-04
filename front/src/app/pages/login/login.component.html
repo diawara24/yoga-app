@@ -18,8 +18,8 @@
           </mat-form-field>
         </mat-card-content>
         <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
-        @if (onError) {
-          <p class="error">An error occurred</p>
+        @if (errorMessage) {
+          <p class="error">{{ errorMessage }}</p>
         }
       </form>
     </mat-card>

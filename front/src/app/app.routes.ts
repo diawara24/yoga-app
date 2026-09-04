@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { UnauthGuard } from "./guards/unauth.guard";
-import { AuthGuard } from "./guards/auth.guard";
+import { unauthGuard } from "./guards/unauth.guard";
+import { authGuard } from "./guards/auth.guard";
 import { MeComponent } from "./components/me/me.component";
 import { NotFoundComponent } from "./pages/not-found/not-found.component";
 import { LoginComponent } from "./pages/login/login.component";
@@ -17,17 +17,17 @@ export const routes: Routes = [
   },
   {
     path: 'register',
-    canActivate: [UnauthGuard],
+    canActivate: [unauthGuard],
     component: RegisterComponent
   },
   {
     path: 'login',
-    canActivate: [UnauthGuard],
+    canActivate: [unauthGuard],
     component: LoginComponent
   },
   {
     path: 'sessions',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -50,15 +50,13 @@ export const routes: Routes = [
         component: FormComponent,
         data: { title: 'Sessions - update' },
       },
-      ]
+    ]
   },
   {
     path: 'me',
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
     component: MeComponent
   },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' },
 ];
-
-
