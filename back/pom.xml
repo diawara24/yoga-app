@@ -224,7 +224,20 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.13</version>
+                <configuration>
+                    <excludes>
 
+                        <!-- DTO -->
+                        <exclude>com/openclassrooms/starterjwt/dto/**</exclude>
+
+                        <!-- Models -->
+                        <exclude>com/openclassrooms/starterjwt/models/**</exclude>
+
+                        <!-- Configuration -->
+                        <exclude>com/openclassrooms/starterjwt/configuration/**</exclude>
+
+                    </excludes>
+                </configuration>
                 <executions>
 
                     <!--
@@ -277,19 +290,6 @@
                                         Couverture globale du projet
                                     -->
                                     <element>BUNDLE</element>
-
-                                    <excludes>
-
-                                        <!-- DTO -->
-                                        <exclude>com/openclassrooms/starterjwt/dto/**</exclude>
-
-                                        <!-- Models -->
-                                        <exclude>com/openclassrooms/starterjwt/models/**</exclude>
-
-                                        <!-- Configuration -->
-                                        <exclude>com/openclassrooms/starterjwt/configuration/**</exclude>
-
-                                    </excludes>
 
                                     <limits>
 

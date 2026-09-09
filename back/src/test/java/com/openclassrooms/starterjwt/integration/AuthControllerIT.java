@@ -3,7 +3,6 @@ package com.openclassrooms.starterjwt.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openclassrooms.starterjwt.dto.request.LoginRequest;
 import com.openclassrooms.starterjwt.dto.request.SignupRequest;
-import com.openclassrooms.starterjwt.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

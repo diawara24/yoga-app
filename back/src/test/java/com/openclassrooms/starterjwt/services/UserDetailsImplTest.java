@@ -1,5 +1,6 @@
-package com.openclassrooms.starterjwt.services.impl;
+package com.openclassrooms.starterjwt.services;
 
+import com.openclassrooms.starterjwt.services.impl.UserDetailsImpl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

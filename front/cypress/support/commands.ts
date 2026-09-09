@@ -1,43 +1,49 @@
-// ***********************************************
-// This example namespace declaration will help
-// with Intellisense and code completion in your
-// IDE or Text Editor.
-// ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
-//
-// function customCommand(param: any): void {
-//   console.warn(param);
-// }
-//
-// NOTE: You can use it like so:
-// Cypress.Commands.add('customCommand', customCommand);
-//
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+/// <reference types="cypress" />
+
+declare namespace Cypress {
+  interface Chainable {
+    clearSession(): Chainable<void>;
+    loginAsAdmin(): Chainable<void>;
+    loginAsUser(): Chainable<void>;
+  }
+}
+
+Cypress.Commands.add('clearSession', () => {
+  cy.clearLocalStorage();
+});
+
+Cypress.Commands.add('loginAsAdmin', () => {
+  cy.intercept('POST', '**/api/auth/login', { fixture: 'session.json' }).as('login');
+  cy.intercept({ method: 'GET', url: /\/api\/session$/ }, { fixture: 'sessions.json' }).as('sessions');
+
+  cy.visit('/login', {
+    onBeforeLoad(win) {
+      win.localStorage.clear();
+    },
+  });
+  cy.get('input[formControlName=email]').type('yoga@studio.com');
+  cy.get('input[formControlName=password]').type('test!1234');
+  cy.get('button[type=submit]').click();
+
+  cy.wait('@login');
+  cy.url().should('include', '/sessions');
+  cy.wait('@sessions');
+});
+
+Cypress.Commands.add('loginAsUser', () => {
+  cy.intercept('POST', '**/api/auth/login', { fixture: 'session-user.json' }).as('login');
+  cy.intercept({ method: 'GET', url: /\/api\/session$/ }, { fixture: 'sessions.json' }).as('sessions');
+
+  cy.visit('/login', {
+    onBeforeLoad(win) {
+      win.localStorage.clear();
+    },
+  });
+  cy.get('input[formControlName=email]').type('user@studio.com');
+  cy.get('input[formControlName=password]').type('test!1234');
+  cy.get('button[type=submit]').click();
+
+  cy.wait('@login');
+  cy.url().should('include', '/sessions');
+  cy.wait('@sessions');
+});
