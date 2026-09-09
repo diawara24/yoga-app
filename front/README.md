@@ -1,48 +1,126 @@
-# Yoga
+# Yoga App — Front
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.16.
+Application Angular 19 (Yoga sessions) — projet OpenClassrooms *Testez et améliorez une application full-stack*.
 
-## Start the project
+## Prérequis
 
-Git clone:
+- Node.js / npm
+- Backend démarré (API disponible via le proxy)
 
-> git clone https://github.com/OpenClassrooms-Student-Center/P5-Full-Stack-testing
+## Installation
 
-Go inside folder:
+```bash
+cd front
+npm install
+```
 
-> cd yoga
+## Démarrer le front
 
-Install dependencies:
+```bash
+npm start
+```
 
-> npm install
+L’application est disponible sur [http://localhost:4200](http://localhost:4200).
 
-Launch Front-end:
+---
 
-> npm run start;
+## Tests
 
+### Tests unitaires (Jest)
 
-### Test
+Lancer les tests :
 
-#### E2E
+```bash
+npm test
+```
 
-Launching e2e test:
+Mode watch :
 
-> npm run e2e
+```bash
+npm run test:watch
+```
 
-Generate coverage report (you should launch e2e test before):
+Tests + rapport de couverture :
 
-> npm run e2e:coverage
+```bash
+npm run test:coverage
+```
 
-Report is available here:
+Rapport HTML Jest :
 
-> front/coverage/lcov-report/index.html
+> `coverage/jest/index.html`
 
-#### Unitary test
+### Tests E2E (Cypress)
 
-Launching test:
+Les specs se trouvent dans `cypress/e2e/` :
 
-> npm run test
+- `login.cy.ts` — connexion (succès / erreur / formulaire invalide)
+- `register.cy.ts` — inscription
+- `sessions.cy.ts` — liste, détail, participation
+- `account.cy.ts` — profil et logout
 
-for following change:
+**Important :** démarrer le front avant (`npm start`).
 
-> npm run test:watch
+Lancer Cypress en headless :
+
+```bash
+npm run test:e2e
+```
+
+Ouvrir l’interface Cypress :
+
+```bash
+npm run test:e2e:open
+```
+
+Équivalents :
+
+```bash
+npm run cypress:run
+npm run cypress:open
+```
+
+Via Angular CLI (avec instrumentation coverage) :
+
+```bash
+npm run e2e
+npm run e2e:ci
+```
+
+Générer le rapport de couverture E2E (après un run e2e instrumenté) :
+
+```bash
+npm run e2e:coverage
+```
+
+Rapport HTML E2E :
+
+> `coverage/lcov-report/index.html`
+
+---
+
+## Structure utile
+
+| Dossier / fichier | Rôle |
+|---|---|
+| `src/app/` | Code applicatif Angular |
+| `src/app/**/*.spec.ts` | Tests unitaires Jest |
+| `cypress/e2e/` | Tests end-to-end Cypress |
+| `cypress/fixtures/` | Données mockées pour Cypress |
+| `cypress/support/commands.ts` | Helpers (`loginAsAdmin`, `loginAsUser`, …) |
+| `RAPPORT_ANALYSE_BONNES_PRATIQUES.md` | Analyse et corrections des bonnes pratiques |
+
+---
+
+## Scripts npm (résumé)
+
+| Script | Description |
+|---|---|
+| `npm start` | Serveur de dev Angular |
+| `npm test` | Tests unitaires Jest |
+| `npm run test:watch` | Jest en mode watch |
+| `npm run test:coverage` | Jest + couverture |
+| `npm run test:e2e` | Cypress headless |
+| `npm run test:e2e:open` | Cypress UI |
+| `npm run e2e` | Cypress via Angular CLI (coverage) |
+| `npm run e2e:coverage` | Rapport coverage E2E (nyc) |
